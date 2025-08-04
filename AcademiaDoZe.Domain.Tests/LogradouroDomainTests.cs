@@ -8,14 +8,14 @@ namespace AcademiaDoZe.Domain.Tests
         [Fact]
         public void CriarLogradouro_Valido_NaoDeveLancarExcecao()
         {
-            var logradouro = Logradouro.Criar("12345670", "Rua A", "Centro", "Cidade", "SP", "Brasil");
+            var logradouro = Logradouro.Criar("12345670", "Rua A", "Centro", "Cidade", "SC", "Brasil");
             Assert.NotNull(logradouro); 
         }
         [Fact]
         public void CriarLogradouro_Invalido_DeveLancarExcecao()
         {
             
-            Assert.Throws<DomainException>(() => Logradouro.Criar("123", "Rua A", "Centro", "Cidade", "SP", "Brasil"));
+            Assert.Throws<DomainException>(() => Logradouro.Criar("123", "Rua A", "Centro", "Cidade", "SC", "Brasil"));
         }
         [Fact]
         public void CriarLogradouro_Valido_VerificarNormalizado()
