@@ -10,6 +10,11 @@ namespace AcademiaDoZe.Domain.ValueObjects
         {
             Conteudo = conteudo;
         }
+
+        public Arquivo(string v)
+        {
+        }
+
         public static Arquivo Criar(byte[] conteudo, string tipoArquivo)
         {
             if (conteudo == null || conteudo.Length == 0)

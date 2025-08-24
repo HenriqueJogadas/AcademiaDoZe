@@ -7,6 +7,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AcademiaDoZe.Domain", "Acad
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AcademiaDoZe.Domain.Tests", "AcademiaDoZe.Domain.Tests\AcademiaDoZe.Domain.Tests.csproj", "{F0094679-AF9B-4AF6-B630-8160B38EF2B3}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AcademiaDoZe.Infrastructure", "AcademiaDoZe.Infrastructure\AcademiaDoZe.Infrastructure.csproj", "{023F3907-25E2-4443-B843-6BF3088B77E7}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -21,6 +23,10 @@ Global
 		{F0094679-AF9B-4AF6-B630-8160B38EF2B3}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{F0094679-AF9B-4AF6-B630-8160B38EF2B3}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{F0094679-AF9B-4AF6-B630-8160B38EF2B3}.Release|Any CPU.Build.0 = Release|Any CPU
+		{023F3907-25E2-4443-B843-6BF3088B77E7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{023F3907-25E2-4443-B843-6BF3088B77E7}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{023F3907-25E2-4443-B843-6BF3088B77E7}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{023F3907-25E2-4443-B843-6BF3088B77E7}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
