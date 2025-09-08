@@ -6,6 +6,7 @@ using AcademiaDoZe.Domain.ValueObjects;
 using AcademiaDoZe.Infrastructure.Data;
 using System.Data;
 using System.Data.Common;
+using System.Runtime.ConstrainedExecution;
 
 namespace AcademiaDoZe.Infrastructure.Repositories
 {
@@ -91,15 +92,21 @@ namespace AcademiaDoZe.Infrastructure.Repositories
 
         private Matricula MapMatricula(DbDataReader reader)
         {
-            // nada funciona tudo da errado como pode?
-            // desisto
+            var endereco = Logradouro.Criar(
+                CEP: reader["cep"].ToString()!,
+                NomeLogradouro: reader["nomelogradouro"].ToString()!,
+                Bairro: reader["bairro"].ToString()!,
+                Cidade: reader["cidade"].ToString()!,
+                Estado: reader["estado"].ToString()!,
+                Pais: reader["pais"].ToString()!
+);
             var aluno = Aluno.Criar(
                 Nome: reader["nome"].ToString()!,
                 Cpf: reader["cpf"].ToString()!,
                 DataNascimento: DateOnly.FromDateTime(Convert.ToDateTime(reader["data_nascimento"])),
                 Telefone: reader["telefone"].ToString()!,
                 Email: reader["email"].ToString()!,
-                Endereco: reader["endereco"],
+                Endereco: endereco,
                 Numero: reader["numero"].ToString()!,
                 Complemento: reader["complemento"].ToString()!,
                 Senha: reader["senha"].ToString()!,
@@ -111,10 +118,10 @@ namespace AcademiaDoZe.Infrastructure.Repositories
             var dataInicio = DateOnly.FromDateTime(Convert.ToDateTime(reader["DataInicio"]));
             var dataFinal = DateOnly.FromDateTime(Convert.ToDateTime(reader["DataFim"]));
             var objetivo = reader["Objetivo"].ToString();
-            var observacoes = reader["ObservacoesRestricoes"].ToString();
             Arquivo laudomedico = null;
+            var observacoes = reader["ObservacoesRestricoes"].ToString();
 
-            return Matricula.Criar(aluno, plano, dataInicio, dataFinal, objetivo, restricoes, laudomedico, observacoes);
+            return Matricula.Criar(Aluno: aluno, Plano: plano, DataInicio: dataInicio, DataFinal: dataFinal, Objetivo: objetivo, Restricoes: restricoes, LaudoMedico: laudomedico,  ObservacoesRestricoes: observacoes);
         }
         protected override async Task<Matricula> MapAsync(DbDataReader reader)
         {

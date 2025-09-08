@@ -11,9 +11,14 @@ namespace AcademiaDoZe.Domain.ValueObjects
             Conteudo = conteudo;
         }
 
-        public Arquivo(string v)
+        public string Caminho { get; }
+
+        public Arquivo(string caminho)
         {
+            Caminho = caminho;
         }
+
+
 
         public static Arquivo Criar(byte[] conteudo, string tipoArquivo)
         {
