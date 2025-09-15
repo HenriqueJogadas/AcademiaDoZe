@@ -1,46 +1,46 @@
-﻿//Henrique Churkin Correia Alberton
+﻿// Henrique Churkin Correia Alberton
+
 using AcademiaDoZe.Domain.Exceptions;
 using AcademiaDoZe.Domain.Services;
 
-namespace AcademiaDoZe.Domain.Entities
+
+namespace AcademiaDoZe.Domain.Entities;
+
+public sealed class Logradouro : Entity
 {
-    public sealed class Logradouro : Entity
+    public string Cep { get; }
+    public string Nome { get; }
+    public string Bairro { get; }
+    public string Cidade { get; }
+    public string Estado { get; }
+    public string Pais { get; }
+    private Logradouro(int id, string cep, string nome, string bairro, string cidade, string estado, string pais) : base(id)
     {
-        public string CEP { get; }
-        public string NomeLogradouro { get; }
-        public string Bairro { get; }
-        public string Cidade { get; }
-        public string Estado { get; }
-        public string Pais { get; }
+        Id = id;
+        Cep = cep;
+        Nome = nome;
+        Bairro = bairro;
+        Cidade = cidade;
+        Estado = estado;
+        Pais = pais;
+    }
+    public static Logradouro Criar(int id, string cep, string nome, string bairro, string cidade, string estado, string pais)
+    {
 
-        private Logradouro(string CEP, string NomeLogradouro, string Bairro, string Cidade, string Estado, string Pais) : base()
-        {
-            this.CEP = CEP;
-            this.NomeLogradouro = NomeLogradouro;
-            this.Bairro = Bairro;
-            this.Cidade = Cidade;
-            this.Estado = Estado;
-            this.Pais = Pais;
-        }
+        if (NormalizadoService.TextoVazioOuNulo(cep)) throw new DomainException("CEP_OBRIGATORIO");
 
-        public static Logradouro Criar(string CEP, string NomeLogradouro, string Bairro, string Cidade, string Estado, string Pais)
-        {
-
-            if (string.IsNullOrWhiteSpace(CEP)) throw new DomainException("CEP_OBRIGATORIO");
-            CEP = NormalizadoService.LimparEDigitos(CEP);
-            if (string.IsNullOrWhiteSpace(NomeLogradouro)) throw new DomainException("NOME_OBRIGATORIO");
-            NomeLogradouro = NormalizadoService.LimparEspacos(NomeLogradouro);
-            if (string.IsNullOrWhiteSpace(Bairro)) throw new DomainException("BAIRRO_OBRIGATORIA");
-            Bairro = NormalizadoService.LimparEspacos(Bairro);
-            if (string.IsNullOrWhiteSpace(Cidade)) throw new DomainException("CIDADE_OBRIGATORIA");
-            Cidade = NormalizadoService.LimparEspacos(Cidade);
-            if (string.IsNullOrWhiteSpace(Estado)) throw new DomainException("ESTADO_OBRIGATORIO");
-            Estado = NormalizadoService.ParaMaiusculo(NormalizadoService.LimparTodosEspacos(Estado));
-            if (CEP.Length != 8) throw new DomainException("CEP_DIGITOS");
-            if (string.IsNullOrWhiteSpace(Pais)) throw new DomainException("PAIS_OBRIGATORIO");
-            Pais = NormalizadoService.LimparEspacos(Pais);
-            
-            return new Logradouro(CEP, NomeLogradouro, Bairro, Cidade, Estado, Pais);
-        }
+        cep = NormalizadoService.LimparEDigitos(cep);
+        if (cep.Length != 8) throw new DomainException("CEP_DIGITOS");
+        if (NormalizadoService.TextoVazioOuNulo(nome)) throw new DomainException("NOME_OBRIGATORIO");
+        nome = NormalizadoService.LimparEspacos(nome);
+        if (NormalizadoService.TextoVazioOuNulo(bairro)) throw new DomainException("BAIRRO_OBRIGATORIO");
+        bairro = NormalizadoService.LimparEspacos(bairro);
+        if (NormalizadoService.TextoVazioOuNulo(cidade)) throw new DomainException("CIDADE_OBRIGATORIO");
+        cidade = NormalizadoService.LimparEspacos(cidade);
+        if (NormalizadoService.TextoVazioOuNulo(estado)) throw new DomainException("ESTADO_OBRIGATORIO");
+        estado = NormalizadoService.ParaMaiusculo(NormalizadoService.LimparTodosEspacos(estado));
+        if (NormalizadoService.TextoVazioOuNulo(pais)) throw new DomainException("PAIS_OBRIGATORIO");
+        pais = NormalizadoService.LimparEspacos(pais);
+        return new Logradouro(id, cep, nome, bairro, cidade, estado, pais);
     }
 }

@@ -1,13 +1,13 @@
-﻿//Henrique Churkin Correia Alberton
-namespace AcademiaDoZe.Infrastructure.Exceptions
+﻿// Henrique Churkin Correia Alberton
+
+namespace AcademiaDoZe.Infrastructure.Exceptions;
+
+public class InfrastructureException : Exception
 {
-    public class InfrastructureException : Exception
+    public InfrastructureException(string message) : base(message)
     {
-        public InfrastructureException(string message) : base(message)
-        {
-        }
-        public InfrastructureException(string message, Exception innerException) : base(message, innerException)
-        {
-        }
+    }
+    public InfrastructureException(string message, Exception innerException) : base(message, innerException)
+    {
     }
 }

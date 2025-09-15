@@ -1,25 +1,26 @@
-﻿//Henrique Churkin Correia Alberton
+﻿// Henrique Churkin Correia Alberton
+
 using AcademiaDoZe.Application.Enums;
 using AcademiaDoZe.Domain.Enums;
-namespace AcademiaDoZe.Application.Mappings
+
+namespace AcademiaDoZe.Application.Mappings;
+
+public static class ColaboradorEnumMappings
 {
-    public static class ColaboradorEnumMappings
+    public static EColaboradorTipo ToDomain(this EAppColaboradorTipo appTipo)
     {
-        public static EnumCargo ToDomain(this EAppColaboradorCargo appTipo)
-        {
-            return (EnumCargo)appTipo;
-        }
-        public static EAppColaboradorCargo ToApp(this EnumCargo domainTipo)
-        {
-            return (EAppColaboradorCargo)domainTipo;
-        }
-        public static EnumVinculo ToDomain(this EAppColaboradorVinculo appVinculo)
-        {
-            return (EnumVinculo)appVinculo;
-        }
-        public static EAppColaboradorVinculo ToApp(this EnumVinculo domainVinculo)
-        {
-            return (EAppColaboradorVinculo)domainVinculo;
-        }
+        return (EColaboradorTipo)appTipo;
+    }
+    public static EAppColaboradorTipo ToApp(this EColaboradorTipo domainTipo)
+    {
+        return (EAppColaboradorTipo)domainTipo;
+    }
+    public static EColaboradorVinculo ToDomain(this EAppColaboradorVinculo appVinculo)
+    {
+        return (EColaboradorVinculo)appVinculo;
+    }
+    public static EAppColaboradorVinculo ToApp(this EColaboradorVinculo domainVinculo)
+    {
+        return (EAppColaboradorVinculo)domainVinculo;
     }
 }

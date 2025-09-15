@@ -1,9 +1,8 @@
-﻿//Henrique Churkin Correia Alberton
-namespace AcademiaDoZe.Application.Enums
+﻿// Henrique Churkin Correia Alberton
+namespace AcademiaDoZe.Application.Enums;
+
+public enum EAppDatabaseType
 {
-    public enum EAppDatabaseType
-    {
-        SqlServer,
-        MySql
-    }
+    SqlServer,
+    MySql
 }

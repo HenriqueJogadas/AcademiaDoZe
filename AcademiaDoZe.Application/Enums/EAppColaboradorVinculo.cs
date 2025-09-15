@@ -1,12 +1,11 @@
-﻿//Henrique Churkin correia AlbertonS
+﻿// Henrique Churkin Correia Alberton
 using System.ComponentModel.DataAnnotations;
-namespace AcademiaDoZe.Application.Enums
+namespace AcademiaDoZe.Application.Enums;
+
+public enum EAppColaboradorVinculo
 {
-    public enum EAppColaboradorVinculo
-    {
-        [Display(Name = "CLT")]
-        CLT = 0,
-        [Display(Name = "Estagiário")]
-        Estagio = 1
-    }
+    [Display(Name = "CLT")]
+    CLT = 0,
+    [Display(Name = "Estagiário")]
+    Estagio = 1
 }

@@ -1,45 +1,68 @@
-﻿//Henrique Churkin Correia Alberton
+﻿// Henrique Churkin Correia Alberton
+
 using AcademiaDoZe.Domain.Entities;
 using AcademiaDoZe.Domain.Enums;
 using AcademiaDoZe.Domain.Exceptions;
 using AcademiaDoZe.Domain.ValueObjects;
-namespace AcademiaDoZe.Domain.Tests
+
+namespace AcademiaDoZe.Domain.Tests;
+
+public class MatriculaDomainTests
 {
-    public class MatriculaDomainTests
+    private Logradouro GetValidLogradouro()
+    => Logradouro.Criar(7, "12345678", "Rua A", "Centro", "Cidade", "SP", "Brasil");
+
+    private Arquivo GetValidArquivo() => Arquivo.Criar(new byte[1]);
+
+    private Aluno GetValidAluno() => Aluno.Criar(
+            1,                               
+            "Rayssa romaniuk",                  
+            "111.111.111-11",               
+            DateOnly.FromDateTime(DateTime.Today.AddYears(-18)), 
+            "(11) 99999-9999",               
+            "test@gmail.com",               
+            GetValidLogradouro(),          
+            "123",                           
+            "Casa",                          
+            "Senha@123",                     
+            GetValidArquivo()               
+    );
+
+    [Fact]
+    public void CriarMatricula_Valido_NaoDeveLancarExcecao()
     {
-        private Aluno GetValidAluno() => Aluno.Criar("Zé Colmeia", "06917136024", DateOnly.FromDateTime(DateTime.Today.AddYears(-20)), "04940028922", "zecolmeia@email.com", "Senhaforte123", GetValidArquivo(), GetValidLogradouro(), "71", "Perto do mercado");
-        private Arquivo GetValidArquivo() => Arquivo.Criar(new byte[1], ".jpg");
-        private Logradouro GetValidLogradouro() => Logradouro.Criar("12345678", "Rua A", "Centro", "Cidade", "SP", "Brasil");
-        [Fact] 
-        public void CriarMatricula_ComDadosValidos_DeveCriarObjeto() 
-        {
-            
-            var aluno = GetValidAluno(); var plano = EnumPlano.Mensal; var datainicio = DateOnly.FromDateTime(DateTime.Today.AddDays(-15)); var datafinal = DateOnly.FromDateTime(DateTime.Today.AddMonths(3));
-            var objetivo = "Ficar maromba"; var restricoes = EnumRestricoes.PressaoAlta; var observacoesrestricoes = ""; var laudomedico = GetValidArquivo();
-            
-            var matricula = Matricula.Criar(aluno, plano, datainicio, datafinal, objetivo, restricoes, observacoesrestricoes, laudomedico);
-            
-            Assert.NotNull(matricula);
-        }
-        [Fact]
-        public void CriarMatricula_ComObjetivoVazio_DeveLancarExcecao()
-        {
+        var id = 1;
+        var aluno = GetValidAluno();
+        var plano = EMatriculaPlano.Semestral;
+        var dataInicio = DateOnly.FromDateTime(DateTime.Today);
+        var dataFim = dataInicio.AddMonths(6);
+        var objetivo = "Emagrecer";
+        var restricoes = EMatriculaRestricoes.Diabetes;
+        var laudoMedico = GetValidArquivo();
+        var observacoes = "Não posso sexta";
 
-            var aluno = GetValidAluno(); var plano = EnumPlano.Mensal; var datainicio = DateOnly.FromDateTime(DateTime.Today.AddDays(-15)); var datafinal = DateOnly.FromDateTime(DateTime.Today.AddMonths(3));
-            var restricoes = EnumRestricoes.PressaoAlta; var observacoesrestricoes = ""; var laudomedico = GetValidArquivo();
+        var matricula = Matricula.Criar(id, aluno, plano, dataInicio, dataFim, objetivo, restricoes, laudoMedico, observacoes);
 
-            var ex = Assert.Throws<DomainException>(() =>
-            Matricula.Criar(
-            aluno,
-            plano,
-            datainicio,
-            datafinal,
-            "",
-            restricoes,
-            observacoesrestricoes,
-            laudomedico
-            ));
-            Assert.Equal("OBJETIVO_OBRIGATORIO", ex.Message);
-        }
+        Assert.NotNull(matricula);
+    }
+
+    [Fact]
+    public void CriarMatricula_ComObjetivoVazio_DeveLancarExcecao()
+    {
+        var id = 1;
+        var aluno = GetValidAluno();
+        var plano = EMatriculaPlano.Semestral;
+        var dataInicio = DateOnly.FromDateTime(DateTime.Today); 
+        var dataFim = dataInicio.AddMonths(6);
+        var objetivo = "";
+        var restricoes = EMatriculaRestricoes.Alergias;
+        var laudoMedico = GetValidArquivo();
+        var observacoes = "nao posso sexta";
+
+        var exception = Assert.Throws<DomainException>(() =>
+            Matricula.Criar(id, aluno, plano, dataInicio, dataFim, objetivo, restricoes, laudoMedico, observacoes)
+        );
+
+        Assert.Equal("OBJETIVO_OBRIGATORIO", exception.Message);
     }
 }

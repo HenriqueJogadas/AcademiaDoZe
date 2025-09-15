@@ -1,48 +1,49 @@
-﻿//Henrique Churkin Correia Alberton
-using AcademiaDoZe.Domain.Entities;
+﻿// Henrique Churkin Correia Alberton
+
 using AcademiaDoZe.Domain.Enums;
 using AcademiaDoZe.Domain.Exceptions;
-using AcademiaDoZe.Domain.Services;
 using AcademiaDoZe.Domain.ValueObjects;
+using AcademiaDoZe.Domain.Services;
 
-namespace AcademiaDoZe.Domain.Entities
+namespace AcademiaDoZe.Domain.Entities;
+
+public class Matricula : Entity
 {
-    public class Matricula : Entity
+    public Aluno AlunoMatricula { get; private set; }
+    public EMatriculaPlano Plano { get; private set; }
+    public DateOnly DataInicio { get; private set; }
+    public DateOnly DataFim { get; private set; }
+    public string Objetivo { get; private set; }
+    public EMatriculaRestricoes RestricoesMedicas { get; private set; }
+    public string ObservacoesRestricoes { get; private set; }
+    public Arquivo LaudoMedico { get; private set; }
+    private Matricula(int id, Aluno alunoMatricula, EMatriculaPlano plano, DateOnly dataInicio, DateOnly dataFim, string objetivo,
+        EMatriculaRestricoes restricoesMedicas, Arquivo laudoMedico, string observacoesRestricoes = "")
+    : base()
     {
-        public Aluno Aluno { get; private set; }
-        public EnumPlano Plano { get; private set; }
-        public DateOnly DataInicio { get; private set; }
-        public DateOnly DataFinal { get; private set; }
-        public string Objetivo { get; private set; }
-        public EnumRestricoes Restricoes { get; private set; }
-        public string ObservacoesRestricoes { get; private set; }
-        public Arquivo LaudoMedico { get; private set; }
-
-        private Matricula(Aluno Aluno, EnumPlano Plano, DateOnly DataInicio, DateOnly DataFinal, string Objetivo, EnumRestricoes Restricoes, string ObservacoesRestricoes, Arquivo LaudoMedico) : base()
-        {
-            this.Aluno = Aluno;
-            this.Plano = Plano;
-            this.DataInicio = DataInicio;
-            this.DataFinal = DataFinal;
-            this.Objetivo = Objetivo;
-            this.Restricoes = Restricoes;
-            this.ObservacoesRestricoes = ObservacoesRestricoes;
-            this.LaudoMedico = LaudoMedico;
-        }
-
-        public static Matricula Criar(Aluno Aluno, EnumPlano Plano, DateOnly DataInicio, DateOnly DataFinal, string Objetivo, EnumRestricoes Restricoes, string ObservacoesRestricoes, Arquivo LaudoMedico)
-        {
-
-            if (Aluno == null) throw new DomainException("ALUNO_OBRIGATORIO");
-            if (Aluno.DataNascimento > DateOnly.FromDateTime(DateTime.Today.AddYears(-16)) && LaudoMedico == null) throw new DomainException("MENOR16_LAUDO_OBRIGATORIO");
-            if (!Enum.IsDefined(Plano)) throw new DomainException("PLANO_INVALIDO");
-            if (DataInicio == default) throw new DomainException("DATA_INICIO_OBRIGATORIO");
-            if (string.IsNullOrWhiteSpace(Objetivo)) throw new DomainException("OBJETIVO_OBRIGATORIO");
-            Objetivo = NormalizadoService.LimparEspacos(Objetivo);
-            if (Restricoes != EnumRestricoes.None && LaudoMedico == null) throw new DomainException("RESTRICOES_LAUDO_OBRIGATORIO");
-            ObservacoesRestricoes = NormalizadoService.LimparEspacos(ObservacoesRestricoes);
-
-            return new Matricula(Aluno, Plano, DataInicio, DataFinal, Objetivo, Restricoes, ObservacoesRestricoes, LaudoMedico);
-        }
+        Id = id;
+        AlunoMatricula = alunoMatricula;
+        Plano = plano;
+        DataInicio = dataInicio;
+        DataFim = dataFim;
+        Objetivo = objetivo;
+        RestricoesMedicas = restricoesMedicas;
+        LaudoMedico = laudoMedico;
+        ObservacoesRestricoes = observacoesRestricoes;
+    }
+    public static Matricula Criar(int id, Aluno alunoMatricula, EMatriculaPlano plano, DateOnly dataInicio, DateOnly dataFim,
+        string objetivo, EMatriculaRestricoes restricoesMedicas, Arquivo laudoMedico, string
+    observacoesRestricoes = "")
+    {
+        if (alunoMatricula == null) throw new DomainException("ALUNO_INVALIDO");
+        if (alunoMatricula.DataNascimento > DateOnly.FromDateTime(DateTime.Today.AddYears(-16)) && laudoMedico == null) throw new DomainException("MENOR16_LAUDO_OBRIGATORIO");
+        if (!Enum.IsDefined(plano)) throw new DomainException("PLANO_INVALIDO");
+        if (dataInicio == default) throw new DomainException("DATA_INICIO_OBRIGATORIO");
+        if (NormalizadoService.TextoVazioOuNulo(objetivo)) throw new DomainException("OBJETIVO_OBRIGATORIO");
+        objetivo = NormalizadoService.LimparEspacos(objetivo);
+        if (restricoesMedicas != EMatriculaRestricoes.None && laudoMedico == null) throw new DomainException("RESTRICOES_LAUDO_OBRIGATORIO");
+        observacoesRestricoes = NormalizadoService.LimparEspacos(observacoesRestricoes);
+        return new Matricula(id, alunoMatricula, plano, dataInicio, dataFim, objetivo, restricoesMedicas, laudoMedico, 
+            observacoesRestricoes);
     }
 }
