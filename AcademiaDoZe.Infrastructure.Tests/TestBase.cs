@@ -16,7 +16,7 @@ public abstract class TestBase
     }
     private (string ConnectionString, DatabaseType DatabaseType) CreateMySqlConfig()
     {
-        var connectionString = "Server=localhost;Database=db_academia_do_ze;User Id=root;Password=rayssa;";
+        var connectionString = "Server=localhost;Port=3306;Database=db_academia_do_ze;User Id=root;Password=henrique;";
 
         return (connectionString, DatabaseType.MySql);
 

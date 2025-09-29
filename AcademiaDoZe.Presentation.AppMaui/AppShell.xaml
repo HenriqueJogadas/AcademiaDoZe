@@ -9,10 +9,15 @@ Title="Academia do Zé">
 <ShellContentTitle="Home" ContentTemplate="{DataTemplate views:MainPage}" Route="MainPage" />
 -->
     <FlyoutItem Title="Dashboard">
+        <!-- Icon="home_icon.png" -->
         <ShellContent ContentTemplate="{DataTemplate views:DashboardListPage}" Route="dashboard" />
     </FlyoutItem>
     <FlyoutItem Title="Logradouros">
+        <!-- Icon="location_icon.png" -->
         <ShellContent ContentTemplate="{DataTemplate views:LogradouroListPage}" Route="logradouros" />
+    </FlyoutItem>
+    <FlyoutItem Title="Configurações">
+        <ShellContent ContentTemplate="{DataTemplate views:ConfigPage}" Route="configuracoes"/>
     </FlyoutItem>
     <!--
 <TabBar>

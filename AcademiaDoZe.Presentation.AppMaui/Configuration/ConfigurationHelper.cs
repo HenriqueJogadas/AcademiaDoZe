@@ -1,33 +1,60 @@
-﻿using System;
+﻿//Henrique Churkin Correia Alberton
+
 using AcademiaDoZe.Application.DependencyInjection;
 using AcademiaDoZe.Application.Enums;
+using AcademiaDoZe.Presentation.AppMaui.Message;
+using CommunityToolkit.Mvvm.Messaging;
 namespace AcademiaDoZe.Presentation.AppMaui.Configuration
 {
+    /* ConfigurationHelper - config inicial a partir das Preferences - recarga automática via Messenger */
     public static class ConfigurationHelper
     {
         public static void ConfigureServices(IServiceCollection services)
         {
+            // lê as preferências do banco de dados
+
+            var (connectionString, databaseType) = ReadDbPreferences();
+            var repoConfig = new RepositoryConfig { ConnectionString = connectionString, DatabaseType = databaseType };
+
+            services.AddSingleton(repoConfig);
+            services.AddApplicationServices();
+            // Assina a mensagem e aplica as mudanças automática
+            WeakReferenceMessenger.Default.Register<RepositoryConfig, BancoPreferencesUpdatedMessage>(
+            // recipient é o RepositoryConfig singleton
+            recipient: repoConfig, handler: static (recipient, message) =>
+            {
+                // aplica as novas configurações
+
+                var (connectionString, databaseType) = ReadDbPreferences();
+
+                recipient.ConnectionString = connectionString;
+                recipient.DatabaseType = databaseType;
+            });
+        }
+        private static (string ConnectionString, EAppDatabaseType DatabaseType) ReadDbPreferences()
+        {
             // dados conexão
 
-            const string dbServer = "172.24.32.1";
-            const string dbDatabase = "db_academia_do_ze";
-            const string dbUser = "sa";
-            const string dbPassword = "abcBolinhas12345";
-            const string dbComplemento = "TrustServerCertificate=True;Encrypt=True;";
-            // se for necessário indicar a porta, incluir junto em dbComplemento
+            string dbServer = Preferences.Get("Servidor", ""); // "172.24.32.1"
+            string dbDatabase = Preferences.Get("Banco", ""); // "db_academia_do_ze"
+            string dbUser = Preferences.Get("Usuario", ""); // "sa"
+            string dbPassword = Preferences.Get("Senha", ""); // "abcBolinhas12345"
+            string dbComplemento = Preferences.Get("Complemento", ""); // "TrustServerCertificate=True;Encrypt=True;"
+                                                                       // Configurações de conexão
 
-            // Configurações de conexão
-            const string connectionString = $"Server={dbServer};Database={dbDatabase};User Id={dbUser};Password={dbPassword};{dbComplemento}";
+            string connectionString = $"Server={dbServer};Database={dbDatabase};User Id={dbUser};Password={dbPassword};{dbComplemento}";
 
-            const EAppDatabaseType databaseType = EAppDatabaseType.SqlServer;
-            // Configura a fábrica de repositórios com a string de conexão e tipo de banco
-            services.AddSingleton(new RepositoryConfig
+            // obtém o tipo de banco de dados selecionado nas preferências
+
+            var dbType = Preferences.Get("DatabaseType", EAppDatabaseType.SqlServer.ToString()) switch
+
             {
-                ConnectionString = connectionString,
-                DatabaseType = databaseType
-            });
-            // configura os serviços da camada de aplicação
-            services.AddApplicationServices();
+                "SqlServer" => EAppDatabaseType.SqlServer,
+                "MySql" => EAppDatabaseType.MySql,
+                _ => EAppDatabaseType.SqlServer
+
+            };
+            return (connectionString, dbType);
         }
     }
 }

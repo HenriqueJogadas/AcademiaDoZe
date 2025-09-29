@@ -29,6 +29,7 @@ namespace AcademiaDoZe.Presentation.AppMaui
             builder.Services.AddTransient<DashboardListPage>();
             builder.Services.AddTransient<LogradouroListPage>();
             builder.Services.AddTransient<LogradouroPage>();
+            builder.Services.AddTransient<ConfigPage>();
 #if DEBUG
             builder.Logging.AddDebug();
 #endif
