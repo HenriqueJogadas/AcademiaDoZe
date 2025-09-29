@@ -17,6 +17,8 @@ namespace AcademiaDoZe.Presentation.AppMaui
             {
                 fonts.AddFont("OpenSans-Regular.ttf", "OpenSansRegular");
                 fonts.AddFont("OpenSans-Semibold.ttf", "OpenSansSemibold");
+                // Adicione esta linha para registrar a fonte
+                fonts.AddFont("MaterialIcons-Regular.ttf", "MaterialIcons");
             });
             // Configurar serviços da aplicação e repositórios
             ConfigurationHelper.ConfigureServices(builder.Services);

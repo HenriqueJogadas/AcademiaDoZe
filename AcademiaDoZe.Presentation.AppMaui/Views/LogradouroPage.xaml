@@ -59,11 +59,17 @@ Title="{Binding Title}">
             </Border>
 
             <!-- Botões de Ação -->
-
             <Grid ColumnDefinitions="*,*" ColumnSpacing="10" Margin="15,10">
-
-                <Button Grid.Column="0" Text="Cancelar" Command="{Binding CancelCommand}" Style="{StaticResource ButtonSecondary}" HeightRequest="50"/>
-                <Button Grid.Column="1" Text="Salvar" Command="{Binding SaveLogradouroCommand}" Style="{StaticResource ButtonPrimary}" HeightRequest="50"/>
+                <Button Grid.Column="0" Text="Cancelar" Command="{Binding CancelCommand}" Style="{StaticResource ButtonSecondary}" HeightRequest="50">
+                    <Button.ImageSource>
+                        <FontImageSource FontFamily="MaterialIcons" Glyph="&#xe5c9;" />
+                    </Button.ImageSource>
+                </Button>
+                <Button Grid.Column="1" Text="Salvar" Command="{Binding SaveColaboradorCommand}" Style="{StaticResource ButtonPrimary}" HeightRequest="50">
+                    <Button.ImageSource>
+                        <FontImageSource FontFamily="MaterialIcons" Glyph="&#xe161;" />
+                    </Button.ImageSource>
+                </Button>
             </Grid>
             <!-- Loading Indicator -->
 
