@@ -18,7 +18,6 @@ public class LogradouroInfrastructureTests : TestBase
         var logradouroInserido = await repoLogradouroAdd.Adicionar(logradouro);
         Assert.NotNull(logradouroInserido);
         Assert.True(logradouroInserido.Id > 0);
-
     }
     [Fact]
     public async Task Logradouro_ObterPorCep_Atualizar()
@@ -42,7 +41,6 @@ public class LogradouroInfrastructureTests : TestBase
 
         Assert.Equal("AT", resultadoAtualizacao.Estado);
         Assert.Equal("Rua Atualizada", resultadoAtualizacao.Nome);
-
     }
 
     [Fact]
@@ -72,7 +70,6 @@ public class LogradouroInfrastructureTests : TestBase
         var resultados = await repoLogradouroPorCidade.ObterPorCidade(cidadeExistente);
         Assert.NotNull(resultados);
         Assert.NotEmpty(resultados);
-
     }
     [Fact]
     public async Task Logradouro_ObterTodos()
