@@ -35,25 +35,25 @@ namespace AcademiaDoZe.Presentation.AppMaui.Configuration
         {
             // dados conexão
 
-            string dbServer = Preferences.Get("Servidor", ""); // "172.24.32.1"
-            string dbDatabase = Preferences.Get("Banco", ""); // "db_academia_do_ze"
-            string dbUser = Preferences.Get("Usuario", ""); // "sa"
-            string dbPassword = Preferences.Get("Senha", ""); // "abcBolinhas12345"
-            string dbComplemento = Preferences.Get("Complemento", ""); // "TrustServerCertificate=True;Encrypt=True;"
-                                                                       // Configurações de conexão
+            const string dbServer = "localhost"; // "172.24.32.1"
+            const string dbDatabase = "db_academiadoze"; // "db_academia_do_ze"
+            const string dbUser = "root"; // "sa"
+            const string dbPassword = "admin"; // "abcBolinhas12345"
+            const string dbComplemento = "Port=3306;SslMode=None"; // "TrustServerCertificate=True;Encrypt=True;"
+                                                                   // Configurações de conexão
 
             string connectionString = $"Server={dbServer};Database={dbDatabase};User Id={dbUser};Password={dbPassword};{dbComplemento}";
+            var dbType = EAppDatabaseType.MySql;
 
             // obtém o tipo de banco de dados selecionado nas preferências
 
-            var dbType = Preferences.Get("DatabaseType", EAppDatabaseType.SqlServer.ToString()) switch
-
+            dbType = Preferences.Get("DatabaseType", "MySql") switch
             {
                 "SqlServer" => EAppDatabaseType.SqlServer,
                 "MySql" => EAppDatabaseType.MySql,
-                _ => EAppDatabaseType.SqlServer
-
+                _ => EAppDatabaseType.MySql
             };
+
             return (connectionString, dbType);
         }
     }

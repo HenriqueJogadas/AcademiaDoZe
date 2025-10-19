@@ -66,8 +66,13 @@ public class LogradouroInfrastructureTests : TestBase
     {
         var cidadeExistente = "Lages";
 
-        var repoLogradouroPorCidade = new LogradouroRepository(ConnectionString, DatabaseType);
-        var resultados = await repoLogradouroPorCidade.ObterPorCidade(cidadeExistente);
+        var repo = new LogradouroRepository(ConnectionString, DatabaseType);
+
+        var novo = Logradouro.Criar(0, "12345678", "Rua das Flores", "Centro", cidadeExistente, "SC", "Brasil");
+        await repo.Adicionar(novo);
+
+        var resultados = await repo.ObterPorCidade(cidadeExistente);
+
         Assert.NotNull(resultados);
         Assert.NotEmpty(resultados);
     }

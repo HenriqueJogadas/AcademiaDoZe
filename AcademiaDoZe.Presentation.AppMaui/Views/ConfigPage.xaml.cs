@@ -14,14 +14,14 @@ public partial class ConfigPage : ContentPage
     }
     private void CarregarTema()
     {
-        // uso de expressão switch para carregar o índice selecionado
+        // uso de expressï¿½o switch para carregar o ï¿½ndice selecionado
         TemaPicker.SelectedIndex = Preferences.Get("Tema", "system") switch { "light" => 0, "dark" => 1, _ => 2, };
     }
     private async void OnSalvarTemaClicked(object sender, EventArgs e)
     {
         string selectedTheme = TemaPicker.SelectedIndex switch { 0 => "light", 1 => "dark", _ => "system" };
         Preferences.Set("Tema", selectedTheme);
-        // Disparar mensagem para uso na recarga dinâmica
+        // Disparar mensagem para uso na recarga dinï¿½mica
         WeakReferenceMessenger.Default.Send(new TemaPreferencesUpdatedMessage("TemaAlterado"));
         await DisplayAlert("Sucesso", "Dados salvos com sucesso!", "OK");
         // Navegar para dashboard
@@ -34,7 +34,7 @@ public partial class ConfigPage : ContentPage
         {
             DatabaseTypePicker.Items.Add(tipo.ToString());
         }
-        // Carregar os dados existentes, ou valores padrão, ao abrir a página
+        // Carregar os dados existentes, ou valores padrï¿½o, ao abrir a pï¿½gina
         ServidorEntry.Text = Preferences.Get("Servidor", "172.24.32.1");
         BancoEntry.Text = Preferences.Get("Banco", "db_academia_do_ze");
         UsuarioEntry.Text = Preferences.Get("Usuario", "sa");
@@ -50,7 +50,7 @@ public partial class ConfigPage : ContentPage
         Preferences.Set("Senha", SenhaEntry.Text);
         Preferences.Set("Complemento", ComplementoEntry.Text);
         Preferences.Set("DatabaseType", DatabaseTypePicker.SelectedItem.ToString());
-        // Disparar a mensagem para recarga dinâmica
+        // Disparar a mensagem para recarga dinï¿½mica
         WeakReferenceMessenger.Default.Send(new BancoPreferencesUpdatedMessage("BancoAlterado"));
         await DisplayAlert("Sucesso", "Dados salvos com sucesso!", "OK");
         // Navegar para dashboard
@@ -61,7 +61,7 @@ public partial class ConfigPage : ContentPage
         // retornar para dashboard
         await Shell.Current.GoToAsync("//dashboard");
     }
-    // Ao fechar a página, chama WeakReferenceMessenger.Default.UnregisterAll(this); para evitar vazamentos de memória - memory leaks
+    // Ao fechar a pï¿½gina, chama WeakReferenceMessenger.Default.UnregisterAll(this); para evitar vazamentos de memï¿½ria - memory leaks
     protected override void OnDisappearing()
     {
         base.OnDisappearing();
