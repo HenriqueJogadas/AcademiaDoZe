@@ -13,7 +13,7 @@ Title="Configurações">
                     <Label Text="Tema" Style="{StaticResource SubHeadline}"/>
                     <StackLayout Spacing="5">
                         <Label Text="Tema" />
-                        <Picker x:Name="TemaPicker">
+                        <Picker x:Name="TemaPicker" SelectedIndexChanged="OnSalvarTemaClicked">
                             <Picker.ItemsSource>
                                 <x:Array Type="{x:Type x:String}">
                                     <x:String>light</x:String>
@@ -38,36 +38,36 @@ Title="Configurações">
                     <Grid ColumnDefinitions="*" ColumnSpacing="10">
                         <StackLayout Spacing="5" Grid.Column="0">
                             <Label Text="Tipo"/>
-                            <Picker x:Name="DatabaseTypePicker"/>
+                            <Picker x:Name="DatabaseTypePicker" SelectedIndexChanged="OnEntryCompleted"/>
                         </StackLayout>
                     </Grid>
                     <Grid ColumnDefinitions="*,*" ColumnSpacing="10">
                         <StackLayout Spacing="5" Grid.Column="0">
                             <Label Text="Servidor"/>
-                            <Entry x:Name="ServidorEntry" Placeholder="Digite o servidor..."/>
+                            <Entry x:Name="ServidorEntry" Completed="OnEntryCompleted"/>
                         </StackLayout>
 
                         <StackLayout Spacing="5" Grid.Column="1">
 
                             <Label Text="Banco"/>
-                            <Entry x:Name="BancoEntry" Placeholder="Digite o nome do banco..."/>
+                            <Entry x:Name="BancoEntry" Completed="OnEntryCompleted"/>
                         </StackLayout>
                     </Grid>
                     <Grid ColumnDefinitions="*,*" ColumnSpacing="10">
                         <StackLayout Spacing="5" Grid.Column="0">
                             <Label Text="Usuário"/>
-                            <Entry x:Name="UsuarioEntry" Placeholder="Digite o usuário..."/>
+                            <Entry x:Name="UsuarioEntry" Completed="OnEntryCompleted"/>
                         </StackLayout>
 
                         <StackLayout Spacing="5" Grid.Column="1">
 
                             <Label Text="Senha"/>
-                            <Entry x:Name="SenhaEntry" Placeholder="Digite a senha..." IsPassword="True"/>
+                            <Entry x:Name="SenhaEntry" Completed="OnEntryCompleted"/>
                         </StackLayout>
                     </Grid>
                     <StackLayout Spacing="5">
                         <Label Text="Complemento"/>
-                        <Entry x:Name="ComplementoEntry" Placeholder="Digite o complemento..."/>
+                        <Entry x:Name="ComplementoEntry" Completed="OnEntryCompleted"/>
                     </StackLayout>
                     <Grid ColumnDefinitions="*,*" ColumnSpacing="10" Margin="15,10">
                         <Button Grid.Column="0" Text="Cancelar" Clicked="OnCancelarClicked" Style="{StaticResource ButtonSecondary}" HeightRequest="45"/>

@@ -16,11 +16,14 @@ Title="Academia do Zé">
         <!-- Icon="location_icon.png" -->
         <ShellContent ContentTemplate="{DataTemplate views:LogradouroListPage}" Route="logradouros" />
     </FlyoutItem>
-    <FlyoutItem Title="Configurações">
-        <ShellContent ContentTemplate="{DataTemplate views:ConfigPage}" Route="configuracoes"/>
-    </FlyoutItem>
     <FlyoutItem Title="Colaboradores">
         <ShellContent ContentTemplate="{DataTemplate views:ColaboradorListPage}" Route="colaboradores" />
+    </FlyoutItem>
+    <FlyoutItem Title="Alunos">
+        <ShellContent ContentTemplate="{DataTemplate views:AlunoListPage}" Route="alunos" />
+    </FlyoutItem>
+    <FlyoutItem Title="Configurações">
+        <ShellContent ContentTemplate="{DataTemplate views:ConfigPage}" Route="configuracoes"/>
     </FlyoutItem>
     <!--
 <TabBar>

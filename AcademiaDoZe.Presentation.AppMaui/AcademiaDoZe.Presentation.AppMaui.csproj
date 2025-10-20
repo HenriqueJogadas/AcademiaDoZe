@@ -71,14 +71,20 @@
 	</ItemGroup>
 
 	<ItemGroup>
+	  <Compile Update="Views\AlunoPage.xaml.cs">
+	    <DependentUpon>AlunoPage.xaml</DependentUpon>
+	  </Compile>
+	  <Compile Update="Views\ColaboradorListPage.xaml.cs">
+	    <DependentUpon>ColaboradorListPage.xaml</DependentUpon>
+	  </Compile>
 	  <Compile Update="Views\ConfigPage.xaml.cs">
 	    <DependentUpon>ConfigPage.xaml</DependentUpon>
 	  </Compile>
 	  <Compile Update="Views\DashboardListPage.xaml.cs">
 	    <DependentUpon>DashboardListPage.xaml</DependentUpon>
 	  </Compile>
-	  <Compile Update="Views\ColaboradorListPage.xaml.cs">
-	    <DependentUpon>ColaboradorListPage.xaml</DependentUpon>
+	  <Compile Update="Views\AlunoListPage.xaml.cs">
+	    <DependentUpon>AlunoListPage.xaml</DependentUpon>
 	  </Compile>
 	  <Compile Update="Views\LogradouroListPage.xaml.xaml.cs">
 	    <DependentUpon>LogradouroListPage.xaml.xaml</DependentUpon>
@@ -92,13 +98,19 @@
 	</ItemGroup>
 
 	<ItemGroup>
+	  <MauiXaml Update="Views\AlunoPage.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </MauiXaml>
+	  <MauiXaml Update="Views\ColaboradorListPage.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </MauiXaml>
 	  <MauiXaml Update="Views\ConfigPage.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
 	  <MauiXaml Update="Views\DashboardListPage.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
-	  <MauiXaml Update="Views\ColaboradorListPage.xaml">
+	  <MauiXaml Update="Views\AlunoListPage.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
 	  <MauiXaml Update="Views\LogradouroListPage.xaml.xaml">
