@@ -18,7 +18,7 @@ public class ColaboradorRepository : BaseRepository<Colaborador>, IColaboradorRe
     {
         try
         {
-            var logradouroId = Convert.ToInt32(reader["logradouro_id"]);
+            var logradouroId = Convert.ToInt32(reader["logradouroid"]);
             var logradouroRepository = new LogradouroRepository(_connectionString, _databaseType);
             var logradouro = await logradouroRepository.ObterPorId(logradouroId) ?? throw new InvalidOperationException($"Logradouro com ID {logradouroId} não encontrado.");
             var colaborador = Colaborador.Criar(
@@ -26,14 +26,14 @@ public class ColaboradorRepository : BaseRepository<Colaborador>, IColaboradorRe
             cpf: reader["cpf"].ToString()!,
             telefone: reader["telefone"].ToString()!,
             nome: reader["nome"].ToString()!,
-            dataNascimento: DateOnly.FromDateTime(Convert.ToDateTime(reader["nascimento"])),
+            dataNascimento: DateOnly.FromDateTime(Convert.ToDateTime(reader["datanascimento"])),
             email: reader["email"].ToString()!,
             endereco: logradouro,
             numero: reader["numero"].ToString()!,
             complemento: reader["complemento"]?.ToString(),
             senha: reader["senha"].ToString()!,
             foto: reader["foto"] is DBNull ? null : Arquivo.Criar((byte[])reader["foto"]),
-            dataAdmissao: DateOnly.FromDateTime(Convert.ToDateTime(reader["admissao"])),
+            dataAdmissao: DateOnly.FromDateTime(Convert.ToDateTime(reader["dataadmissao"])),
             tipo: (EColaboradorTipo)Convert.ToInt32(reader["tipo"]),
             vinculo: (EColaboradorVinculo)Convert.ToInt32(reader["vinculo"])
             );
@@ -49,24 +49,24 @@ public class ColaboradorRepository : BaseRepository<Colaborador>, IColaboradorRe
         {
             await using var connection = await GetOpenConnectionAsync();
             string query = _databaseType == DatabaseType.SqlServer
-            ? $"INSERT INTO {TableName} (cpf, telefone, nome, nascimento, email, logradouro_id, numero, complemento, senha, foto, admissao, tipo, vinculo) "
+            ? $"INSERT INTO {TableName} (cpf, telefone, nome, datanascimento, email, logradouroid, numero, complemento, senha, foto, dataadmissao, tipo, vinculo) "
             + "OUTPUT INSERTED.id_colaborador "
-            + "VALUES (@Cpf, @Telefone, @Nome, @Nascimento, @Email, @LogradouroId, @Numero, @Complemento, @Senha, @Foto, @Admissao, @Tipo, @Vinculo);"
-            : $"INSERT INTO {TableName} (cpf, telefone, nome, nascimento, email, logradouro_id, numero, complemento, senha, foto, admissao, tipo, vinculo) "
-            + "VALUES (@Cpf, @Telefone, @Nome, @Nascimento, @Email, @LogradouroId, @Numero, @Complemento, @Senha, @Foto, @Admissao, @Tipo, @Vinculo); "
+            + "VALUES (@Cpf, @Telefone, @Nome, @DataNascimento, @Email, @LogradouroId, @Numero, @Complemento, @Senha, @Foto, @DataAdmissao, @Tipo, @Vinculo);"
+            : $"INSERT INTO {TableName} (cpf, telefone, nome, datanascimento, email, logradouroid, numero, complemento, senha, foto, dataadmissao, tipo, vinculo) "
+            + "VALUES (@Cpf, @Telefone, @Nome, @DataNascimento, @Email, @LogradouroId, @Numero, @Complemento, @Senha, @Foto, @DataAdmissao, @Tipo, @Vinculo); "
             + "SELECT LAST_INSERT_ID();";
             await using var command = DbProvider.CreateCommand(query, connection);
             command.Parameters.Add(DbProvider.CreateParameter("@Cpf", entity.Cpf, DbType.String, _databaseType));
             command.Parameters.Add(DbProvider.CreateParameter("@Telefone", entity.Telefone, DbType.String, _databaseType));
             command.Parameters.Add(DbProvider.CreateParameter("@Nome", entity.Nome, DbType.String, _databaseType));
-            command.Parameters.Add(DbProvider.CreateParameter("@Nascimento", entity.DataNascimento, DbType.Date, _databaseType));
+            command.Parameters.Add(DbProvider.CreateParameter("@DataNascimento", entity.DataNascimento, DbType.Date, _databaseType));
             command.Parameters.Add(DbProvider.CreateParameter("@Email", entity.Email, DbType.String, _databaseType));
             command.Parameters.Add(DbProvider.CreateParameter("@LogradouroId", entity.Endereco.Id, DbType.Int32, _databaseType));
             command.Parameters.Add(DbProvider.CreateParameter("@Numero", entity.Numero, DbType.String, _databaseType));
             command.Parameters.Add(DbProvider.CreateParameter("@Complemento", (object)entity.Complemento ?? DBNull.Value, DbType.String, _databaseType));
             command.Parameters.Add(DbProvider.CreateParameter("@Senha", entity.Senha, DbType.String, _databaseType));
             command.Parameters.Add(DbProvider.CreateParameter("@Foto", (object)entity.Foto.Conteudo ?? DBNull.Value, DbType.Binary, _databaseType));
-            command.Parameters.Add(DbProvider.CreateParameter("@Admissao", entity.DataAdmissao, DbType.Date, _databaseType));
+            command.Parameters.Add(DbProvider.CreateParameter("@DataAdmissao", entity.DataAdmissao, DbType.Date, _databaseType));
             command.Parameters.Add(DbProvider.CreateParameter("@Tipo", (int)entity.Tipo, DbType.Int32, _databaseType));
             command.Parameters.Add(DbProvider.CreateParameter("@Vinculo", (int)entity.Vinculo, DbType.Int32, _databaseType));
             var id = await command.ExecuteScalarAsync();
@@ -101,14 +101,14 @@ public class ColaboradorRepository : BaseRepository<Colaborador>, IColaboradorRe
             + "SET cpf = @Cpf, "
             + "telefone = @Telefone, "
             + "nome = @Nome, "
-            + "nascimento = @Nascimento, "
+            + "datanascimento = @DataNascimento, "
             + "email = @Email, "
-            + "logradouro_id = @LogradouroId, "
+            + "logradouroid = @LogradouroId, "
             + "numero = @Numero, "
             + "complemento = @Complemento, "
             + "senha = @Senha, "
             + "foto = @Foto, "
-            + "admissao = @Admissao, "
+            + "dataadmissao = @DataAdmissao, "
             + "tipo = @Tipo, "
             + "vinculo = @Vinculo "
             + "WHERE id_colaborador = @Id";
@@ -117,14 +117,14 @@ public class ColaboradorRepository : BaseRepository<Colaborador>, IColaboradorRe
             command.Parameters.Add(DbProvider.CreateParameter("@Cpf", entity.Cpf, DbType.String, _databaseType));
             command.Parameters.Add(DbProvider.CreateParameter("@Telefone", entity.Telefone, DbType.String, _databaseType));
             command.Parameters.Add(DbProvider.CreateParameter("@Nome", entity.Nome, DbType.String, _databaseType));
-            command.Parameters.Add(DbProvider.CreateParameter("@Nascimento", entity.DataNascimento, DbType.Date, _databaseType));
+            command.Parameters.Add(DbProvider.CreateParameter("@DataNascimento", entity.DataNascimento, DbType.Date, _databaseType));
             command.Parameters.Add(DbProvider.CreateParameter("@Email", entity.Email, DbType.String, _databaseType));
             command.Parameters.Add(DbProvider.CreateParameter("@LogradouroId", entity.Endereco.Id, DbType.Int32, _databaseType));
             command.Parameters.Add(DbProvider.CreateParameter("@Numero", entity.Numero, DbType.String, _databaseType));
             command.Parameters.Add(DbProvider.CreateParameter("@Complemento", (object)entity.Complemento ?? DBNull.Value, DbType.String, _databaseType));
             command.Parameters.Add(DbProvider.CreateParameter("@Senha", entity.Senha, DbType.String, _databaseType));
             command.Parameters.Add(DbProvider.CreateParameter("@Foto", (object)entity.Foto.Conteudo ?? DBNull.Value, DbType.Binary, _databaseType));
-            command.Parameters.Add(DbProvider.CreateParameter("@Admissao", entity.DataAdmissao, DbType.Date, _databaseType));
+            command.Parameters.Add(DbProvider.CreateParameter("@DataAdmissao", entity.DataAdmissao, DbType.Date, _databaseType));
             command.Parameters.Add(DbProvider.CreateParameter("@Tipo", (int)entity.Tipo, DbType.Int32, _databaseType));
             command.Parameters.Add(DbProvider.CreateParameter("@Vinculo", (int)entity.Vinculo, DbType.Int32, _databaseType));
             int rowsAffected = await command.ExecuteNonQueryAsync();

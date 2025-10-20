@@ -17,7 +17,7 @@ public class AlunoRepository : BaseRepository<Aluno>, IAlunoRepository
     {
         try
         {
-            var logradouroId = Convert.ToInt32(reader["logradouro_id"]);
+            var logradouroId = Convert.ToInt32(reader["logradouroid"]);
             var logradouroRepository = new LogradouroRepository(_connectionString, _databaseType);
             var logradouro = await logradouroRepository.ObterPorId(logradouroId) ?? throw new InvalidOperationException($"Logradouro com ID {logradouroId} não encontrado.");
             var aluno = Aluno.Criar(
@@ -25,7 +25,7 @@ public class AlunoRepository : BaseRepository<Aluno>, IAlunoRepository
             cpf: reader["cpf"].ToString()!,
             telefone: reader["telefone"].ToString()!,
             nome: reader["nome"].ToString()!,
-            dataNascimento: DateOnly.FromDateTime(Convert.ToDateTime(reader["nascimento"])),
+            dataNascimento: DateOnly.FromDateTime(Convert.ToDateTime(reader["datanascimento"])),
             email: reader["email"].ToString()!,
             endereco: logradouro,
             numero: reader["numero"].ToString()!,
@@ -45,17 +45,17 @@ public class AlunoRepository : BaseRepository<Aluno>, IAlunoRepository
         {
             await using var connection = await GetOpenConnectionAsync();
             string query = _databaseType == DatabaseType.SqlServer
-            ? $"INSERT INTO {TableName} (cpf, telefone, nome, nascimento, email, logradouro_id, numero, complemento, senha, foto, admissao, tipo, vinculo) "
+            ? $"INSERT INTO {TableName} (cpf, telefone, nome, datanascimento, email, logradouroid, numero, complemento, senha, foto, admissao, tipo, vinculo) "
             + "OUTPUT INSERTED.id_aluno "
-            + "VALUES (@Cpf, @Telefone, @Nome, @Nascimento, @Email, @LogradouroId, @Numero, @Complemento, @Senha, @Foto);"
-            : $"INSERT INTO {TableName} (cpf, telefone, nome, nascimento, email, logradouro_id, numero, complemento, senha, foto) "
-            + "VALUES (@Cpf, @Telefone, @Nome, @Nascimento, @Email, @LogradouroId, @Numero, @Complemento, @Senha, @Foto); "
+            + "VALUES (@Cpf, @Telefone, @Nome, @DataNascimento, @Email, @LogradouroId, @Numero, @Complemento, @Senha, @Foto);"
+            : $"INSERT INTO {TableName} (cpf, telefone, nome, datanascimento, email, logradouroid, numero, complemento, senha, foto) "
+            + "VALUES (@Cpf, @Telefone, @Nome, @DataNascimento, @Email, @LogradouroId, @Numero, @Complemento, @Senha, @Foto); "
             + "SELECT LAST_INSERT_ID();";
             await using var command = DbProvider.CreateCommand(query, connection);
             command.Parameters.Add(DbProvider.CreateParameter("@Cpf", entity.Cpf, DbType.String, _databaseType));
             command.Parameters.Add(DbProvider.CreateParameter("@Telefone", entity.Telefone, DbType.String, _databaseType));
             command.Parameters.Add(DbProvider.CreateParameter("@Nome", entity.Nome, DbType.String, _databaseType));
-            command.Parameters.Add(DbProvider.CreateParameter("@Nascimento", entity.DataNascimento, DbType.Date, _databaseType));
+            command.Parameters.Add(DbProvider.CreateParameter("@DataNascimento", entity.DataNascimento, DbType.Date, _databaseType));
             command.Parameters.Add(DbProvider.CreateParameter("@Email", entity.Email, DbType.String, _databaseType));
             command.Parameters.Add(DbProvider.CreateParameter("@LogradouroId", entity.Endereco.Id, DbType.Int32, _databaseType));
             command.Parameters.Add(DbProvider.CreateParameter("@Numero", entity.Numero, DbType.String, _databaseType));
@@ -94,9 +94,9 @@ public class AlunoRepository : BaseRepository<Aluno>, IAlunoRepository
             + "SET cpf = @Cpf, "
             + "telefone = @Telefone, "
             + "nome = @Nome, "
-            + "nascimento = @Nascimento, "
+            + "datanascimento = @DataNascimento, "
             + "email = @Email, "
-            + "logradouro_id = @LogradouroId, "
+            + "logradouroid = @LogradouroId, "
             + "numero = @Numero, "
             + "complemento = @Complemento, "
             + "senha = @Senha, "
@@ -107,7 +107,7 @@ public class AlunoRepository : BaseRepository<Aluno>, IAlunoRepository
             command.Parameters.Add(DbProvider.CreateParameter("@Cpf", entity.Cpf, DbType.String, _databaseType));
             command.Parameters.Add(DbProvider.CreateParameter("@Telefone", entity.Telefone, DbType.String, _databaseType));
             command.Parameters.Add(DbProvider.CreateParameter("@Nome", entity.Nome, DbType.String, _databaseType));
-            command.Parameters.Add(DbProvider.CreateParameter("@Nascimento", entity.DataNascimento, DbType.Date, _databaseType));
+            command.Parameters.Add(DbProvider.CreateParameter("@DataNascimento", entity.DataNascimento, DbType.Date, _databaseType));
             command.Parameters.Add(DbProvider.CreateParameter("@Email", entity.Email, DbType.String, _databaseType));
             command.Parameters.Add(DbProvider.CreateParameter("@LogradouroId", entity.Endereco.Id, DbType.Int32, _databaseType));
             command.Parameters.Add(DbProvider.CreateParameter("@Numero", entity.Numero, DbType.String, _databaseType));

@@ -17,7 +17,7 @@ public class MatriculaRepository : BaseRepository<Matricula>, IMatriculaReposito
     {
         try
         {
-            var alunoId = Convert.ToInt32(reader["aluno_id"]);
+            var alunoId = Convert.ToInt32(reader["id_aluno"]);
             var alunoRepository = new AlunoRepository(_connectionString, _databaseType);
             var aluno = await alunoRepository.ObterPorId(alunoId) ?? throw new InvalidOperationException($"Aluno com ID {alunoId} não encontrado.");
             var matricula = Matricula.Criar(
@@ -45,10 +45,10 @@ public class MatriculaRepository : BaseRepository<Matricula>, IMatriculaReposito
         {
             await using var connection = await GetOpenConnectionAsync();
             string query = _databaseType == DatabaseType.SqlServer
-            ? $"INSERT INTO {TableName} (aluno_id, colaborador_id, plano, data_inicio, data_fim, objetivo, restricao_medica, laudo_medico, obs_restricao) "
+            ? $"INSERT INTO {TableName} (id_aluno, id_colaborador, plano, data_inicio, data_fim, objetivo, restricao_medica, laudo_medico, obs_restricao) "
             + "OUTPUT INSERTED.id_matricula "
             + "VALUES (@Aluno, @Colaborador, @Plano, @Data_inicio, @Data_fim, @Objetivo, @Restricoes_medicas, @Laudo_medico, @Observacoes_restricoes);"
-            : $"INSERT INTO {TableName} (aluno_id, colaborador_id, plano, data_inicio, data_fim, objetivo, restricao_medica, laudo_medico, obs_restricao) "
+            : $"INSERT INTO {TableName} (id_aluno, id_colaborador, plano, data_inicio, data_fim, objetivo, restricao_medica, laudo_medico, obs_restricao) "
             + "VALUES (@Aluno, @Colaborador, @Plano, @Data_inicio, @Data_fim, @Objetivo, @Restricoes_medicas, @Laudo_medico, @Observacoes_restricoes); "
             + "SELECT LAST_INSERT_ID();";
             await using var command = DbProvider.CreateCommand(query, connection);
@@ -78,8 +78,8 @@ public class MatriculaRepository : BaseRepository<Matricula>, IMatriculaReposito
         {
             await using var connection = await GetOpenConnectionAsync();
             string query = $"UPDATE {TableName} "
-            + "SET aluno_id = @Aluno, "
-            + "colaborador_id = @Colaborador,"
+            + "SET id_aluno = @Aluno, "
+            + "id_colaborador = @Colaborador,"
             + "plano = @Plano, "
             + "data_inicio = @Data_inicio, "
             + "data_fim = @Data_fim, "
@@ -118,7 +118,7 @@ public class MatriculaRepository : BaseRepository<Matricula>, IMatriculaReposito
         {
             await using var connection = await GetOpenConnectionAsync();
             string query = $"SELECT * FROM {TableName} WHERE data_fim >{(_databaseType == DatabaseType.SqlServer ? "GETDATE()" :
-"CURRENT_DATE()")} {(idAluno > 0 ? "AND aluno_id = @id" : "")} ";
+"CURRENT_DATE()")} {(idAluno > 0 ? "AND id_aluno = @id" : "")} ";
 
             await using var command = DbProvider.CreateCommand(query, connection);
 
@@ -149,7 +149,7 @@ public class MatriculaRepository : BaseRepository<Matricula>, IMatriculaReposito
         try
         {
             await using var connection = await GetOpenConnectionAsync();
-            string query = $"SELECT * FROM {TableName} WHERE aluno_id = @Aluno";
+            string query = $"SELECT * FROM {TableName} WHERE id_aluno = @Aluno";
             await using var command = DbProvider.CreateCommand(query, connection);
             command.Parameters.Add(DbProvider.CreateParameter("@Aluno", alunoId, DbType.String, _databaseType));
             using var reader = await command.ExecuteReaderAsync();

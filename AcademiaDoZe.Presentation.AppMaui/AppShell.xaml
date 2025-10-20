@@ -19,6 +19,9 @@ Title="Academia do Zé">
     <FlyoutItem Title="Configurações">
         <ShellContent ContentTemplate="{DataTemplate views:ConfigPage}" Route="configuracoes"/>
     </FlyoutItem>
+    <FlyoutItem Title="Colaboradores">
+        <ShellContent ContentTemplate="{DataTemplate views:ColaboradorListPage}" Route="colaboradores" />
+    </FlyoutItem>
     <!--
 <TabBar>
 <ShellContent Title="Dashboard" ContentTemplate="{DataTemplate views:DashboardListPage}" Route="dashboard" />

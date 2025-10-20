@@ -24,13 +24,12 @@ public class ColaboradorInfrastructureTests : TestBase
         var repoColaboradorCpf = new ColaboradorRepository(ConnectionString, DatabaseType);
 
         var cpfExistente = await repoColaboradorCpf.CpfJaExiste(_cpf);
-        Assert.False(cpfExistente, "CPF já existe no banco de dados.");
+        Assert.False(cpfExistente, "CPF já existe no banco de dados."); 
         var colaborador = Colaborador.Criar(
             1,
         "zé",
         _cpf,
-
-        new DateOnly(2010, 10, 09),
+        new DateOnly(2002, 10, 09),
         "49999999999",
         "ze@com.br",
         logradouro!,
@@ -38,7 +37,6 @@ public class ColaboradorInfrastructureTests : TestBase
         "complemento casa",
         "abcBolinhas",
         arquivo,
-
         new DateOnly(2024, 05, 04),
         EColaboradorTipo.Administrador,
         EColaboradorVinculo.CLT
